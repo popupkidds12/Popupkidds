@@ -585,20 +585,21 @@ footer{background:var(--dark);padding:32px 40px}
         <div class="mapw" id="map-container">
           <iframe
             id="map-iframe"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=55.7320,24.2160,55.7520,24.2310&layer=mapnik&marker=24.2235,55.7420"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3630.5!2d55.7420!3d24.2235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDEzJzI0LjYiTiA1NcKwNDQnMzEuMiJF!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
             style="width:100%;height:100%;border:0"
             loading="lazy"
-            title="Pop-Up Kidds Location"
-            allowfullscreen>
+            title="Pop-Up Kidds Location - Al Wadi Mall Al Ain"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade">
           </iframe>
-          <div id="map-fallback" style="display:none;width:100%;height:100%;background:linear-gradient(135deg,#e8f4f0,#d0ebe4);flex-direction:column;align-items:center;justify-content:center;cursor:pointer;text-decoration:none" onclick="window.open('https://maps.google.com/?q=Al+Wadi+Mall,+Al+Quaa,+Al+Ain,+Abu+Dhabi','_blank')" id="map-fallback-inner" style="display:none;width:100%;height:100%;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;text-decoration:none" onclick="window.open('https://maps.google.com/?q=Al+Wadi+Mall,+Al+Quaa,+Al+Ain,+Abu+Dhabi','_blank')">
+          <div id="map-fallback" style="display:none;width:100%;height:100%;background:linear-gradient(135deg,#e8f4f0,#d0ebe4);flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=24.2235,55.7420&destination_place_id=Al+Wadi+Mall+Al+Ain','_blank')">
             <div style="font-size:52px;margin-bottom:12px">&#128205;</div>
             <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:18px;color:#1A1A2E;margin-bottom:6px">Al Wadi Mall</div>
             <div style="font-size:13px;color:#555;font-weight:600;margin-bottom:16px">Al Qua'a, Al Ain, Abu Dhabi</div>
-            <div style="background:#4BBFB0;color:#fff;font-family:Baloo 2,cursive;font-weight:800;font-size:14px;padding:10px 22px;border-radius:50px">&#128506; Tap to open Maps</div>
+            <div style="background:#4BBFB0;color:#fff;font-family:Baloo 2,cursive;font-weight:800;font-size:14px;padding:10px 22px;border-radius:50px">&#128506; Tap for Directions</div>
           </div>
         </div>
-        <a id="s-mapslink" href="https://maps.google.com/?q=Al+Wadi+Mall,+Al+Quaa,+Al+Ain,+Abu+Dhabi" target="_blank" class="mapbtn">&#128506; Open in Google Maps</a>
+        <a id="s-mapslink" href="https://www.google.com/maps/dir/?api=1&destination=24.2235,55.7420" target="_blank" class="mapbtn">&#128506; Get Directions</a>
       </div>
       <div class="ldets rev-r">
         <div class="li"><div class="lic lit">&#128205;</div><div class="ltxt"><strong>Address</strong><span id="s-addr">Al Wadi Mall, Al Qua&#8217;a &#8211; Shop No. 6, Al Ain</span></div></div>
