@@ -1105,7 +1105,8 @@ function sv(id,v){
 }
 
 function dbGet(tbl,q){
-  return fetch(SB+"/rest/v1/"+tbl+"?"+(q||""),{headers:HDR})
+  var sep=q?"&":"";
+  return fetch(SB+"/rest/v1/"+tbl+"?"+(q||"")+"&apikey="+SK,{headers:HDR})
     .then(function(r){
       if(!r.ok){return r.text().then(function(t){console.warn("DB",tbl,r.status,t.slice(0,80));return[];});}
       return r.json();
