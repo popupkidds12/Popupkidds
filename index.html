@@ -1639,11 +1639,13 @@ function doUpload(id){
   var ub=el("ub-"+id);var us=el("us-"+id);
   if(ub){ub.disabled=true;ub.textContent="Uploading...";}
   if(us)us.textContent="Uploading...";
-  var ext=file.name.split(".").pop();
+  var ext=file.name.split(".").pop().toLowerCase();
   var path=id+"_"+Date.now()+"."+ext;
+  var mimeMap={"jpg":"image/jpeg","jpeg":"image/jpeg","png":"image/png","gif":"image/gif","webp":"image/webp","heic":"image/heic","heif":"image/heif"};
+  var mime=mimeMap[ext]||file.type||"image/jpeg";
   fetch(SB+"/storage/v1/object/"+BKT+"/"+path+"?apikey="+SK,{
     method:"POST",
-    headers:{"apikey":SK,"Authorization":"Bearer "+SK,"Content-Type":file.type,"x-upsert":"true"},
+    headers:{"apikey":SK,"Authorization":"Bearer "+SK,"Content-Type":mime,"x-upsert":"true"},
     body:file
   }).then(function(sr){
     if(!sr.ok)return sr.json().then(function(j){throw new Error(j.message||j.error||"Upload failed");});
