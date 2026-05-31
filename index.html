@@ -582,24 +582,60 @@ footer{background:var(--dark);padding:32px 40px}
     </div>
     <div class="lgrid">
       <div class="rev-l">
-        <div class="mapw" id="map-container">
-          <iframe
-            id="map-iframe"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3630.5!2d55.7420!3d24.2235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDEzJzI0LjYiTiA1NcKwNDQnMzEuMiJF!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
-            style="width:100%;height:100%;border:0"
-            loading="lazy"
-            title="Pop-Up Kidds Location - Al Wadi Mall Al Ain"
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
-          <div id="map-fallback" style="display:none;width:100%;height:100%;background:linear-gradient(135deg,#e8f4f0,#d0ebe4);flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=24.2235,55.7420&destination_place_id=Al+Wadi+Mall+Al+Ain','_blank')">
-            <div style="font-size:52px;margin-bottom:12px">&#128205;</div>
-            <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:18px;color:#1A1A2E;margin-bottom:6px">Al Wadi Mall</div>
-            <div style="font-size:13px;color:#555;font-weight:600;margin-bottom:16px">Al Qua'a, Al Ain, Abu Dhabi</div>
-            <div style="background:#4BBFB0;color:#fff;font-family:Baloo 2,cursive;font-weight:800;font-size:14px;padding:10px 22px;border-radius:50px">&#128506; Tap for Directions</div>
-          </div>
+        <div class="mapw" id="map-container" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=24.2235,55.7420','_blank')" style="cursor:pointer;position:relative;">
+          <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;border-radius:32px;">
+            <!-- Background -->
+            <rect width="480" height="340" fill="#e8f0e8"/>
+            <!-- Grid of faint streets -->
+            <line x1="0" y1="80" x2="480" y2="80" stroke="#d0dbd0" stroke-width="1"/>
+            <line x1="0" y1="160" x2="480" y2="160" stroke="#d0dbd0" stroke-width="1"/>
+            <line x1="0" y1="240" x2="480" y2="240" stroke="#d0dbd0" stroke-width="1"/>
+            <line x1="96" y1="0" x2="96" y2="340" stroke="#d0dbd0" stroke-width="1"/>
+            <line x1="192" y1="0" x2="192" y2="340" stroke="#d0dbd0" stroke-width="1"/>
+            <line x1="288" y1="0" x2="288" y2="340" stroke="#d0dbd0" stroke-width="1"/>
+            <line x1="384" y1="0" x2="384" y2="340" stroke="#d0dbd0" stroke-width="1"/>
+            <!-- Main roads -->
+            <rect x="0" y="148" width="480" height="24" fill="#fff" rx="0"/>
+            <line x1="0" y1="160" x2="480" y2="160" stroke="#f5d06a" stroke-width="1.5" stroke-dasharray="14,10"/>
+            <rect x="200" y="0" width="24" height="340" fill="#fff" rx="0"/>
+            <line x1="212" y1="0" x2="212" y2="340" stroke="#f5d06a" stroke-width="1.5" stroke-dasharray="14,10"/>
+            <!-- Secondary roads -->
+            <rect x="0" y="60" width="480" height="12" fill="#f0ede4" rx="0"/>
+            <rect x="0" y="258" width="480" height="12" fill="#f0ede4" rx="0"/>
+            <rect x="100" y="0" width="12" height="340" fill="#f0ede4" rx="0"/>
+            <rect x="340" y="0" width="12" height="340" fill="#f0ede4" rx="0"/>
+            <!-- Green park areas -->
+            <rect x="28" y="90" width="60" height="46" rx="8" fill="#c8e6c0" opacity="0.7"/>
+            <rect x="320" y="90" width="50" height="46" rx="8" fill="#c8e6c0" opacity="0.7"/>
+            <rect x="28" y="180" width="60" height="56" rx="8" fill="#c8e6c0" opacity="0.6"/>
+            <rect x="380" y="180" width="70" height="56" rx="8" fill="#c8e6c0" opacity="0.6"/>
+            <!-- Building blocks -->
+            <rect x="230" y="90" width="90" height="46" rx="6" fill="#dce4ec" opacity="0.8"/>
+            <rect x="230" y="180" width="90" height="56" rx="6" fill="#dce4ec" opacity="0.8"/>
+            <rect x="28" y="270" width="150" height="50" rx="6" fill="#dce4ec" opacity="0.7"/>
+            <rect x="330" y="270" width="90" height="50" rx="6" fill="#dce4ec" opacity="0.7"/>
+            <!-- Al Wadi Mall highlight box -->
+            <rect x="118" y="170" width="72" height="50" rx="10" fill="#4BBFB0" opacity="0.25"/>
+            <rect x="118" y="170" width="72" height="50" rx="10" fill="none" stroke="#4BBFB0" stroke-width="2.5"/>
+            <text x="154" y="192" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="8" fill="#2a8a80">AL WADI</text>
+            <text x="154" y="204" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="8" fill="#2a8a80">MALL</text>
+            <!-- Road labels -->
+            <text x="240" y="145" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" fill="#999" font-weight="700">Al Qua'a Road</text>
+            <text x="105" y="30" text-anchor="middle" font-family="Nunito,sans-serif" font-size="8" fill="#999" font-weight="700" transform="rotate(90,105,30)">Al Ain St</text>
+            <!-- Pin drop -->
+            <g transform="translate(154,148)">
+              <circle cx="0" cy="0" r="22" fill="rgba(75,191,176,0.2)"/>
+              <circle cx="0" cy="0" r="14" fill="rgba(75,191,176,0.35)"/>
+              <!-- Pin body -->
+              <path d="M0,-28 C-12,-28 -20,-18 -20,-8 C-20,8 0,28 0,28 C0,28 20,8 20,-8 C20,-18 12,-28 0,-28 Z" fill="#E86B4A"/>
+              <circle cx="0" cy="-8" r="8" fill="#fff"/>
+            </g>
+            <!-- Tap to open overlay hint -->
+            <rect x="130" y="295" width="220" height="32" rx="16" fill="rgba(26,26,46,0.72)"/>
+            <text x="240" y="316" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#fff" font-weight="800">📍 Tap map to open Google Maps</text>
+          </svg>
         </div>
-        <a id="s-mapslink" href="https://www.google.com/maps/dir/?api=1&destination=24.2235,55.7420" target="_blank" class="mapbtn">&#128506; Get Directions</a>
+        <a id="s-mapslink" href="https://www.google.com/maps/dir/?api=1&destination=24.2235,55.7420" target="_blank" class="mapbtn">🧭 Get Directions</a>
       </div>
       <div class="ldets rev-r">
         <div class="li"><div class="lic lit">&#128205;</div><div class="ltxt"><strong>Address</strong><span id="s-addr">Al Wadi Mall, Al Qua&#8217;a &#8211; Shop No. 6, Al Ain</span></div></div>
@@ -1723,24 +1759,7 @@ function toast(msg,type){
   document.body.appendChild(t);setTimeout(function(){if(t.parentNode)t.remove();},3500);
 }
 
-// Map iframe error handling
-var mapIframe = document.getElementById("map-iframe");
-var mapFallback = document.getElementById("map-fallback");
-if(mapIframe){
-  mapIframe.addEventListener("error", function(){
-    mapIframe.style.display = "none";
-    if(mapFallback) mapFallback.style.display = "flex";
-  });
-  // Also check after 5s if map actually loaded
-  setTimeout(function(){
-    try {
-      var h = mapIframe.contentWindow || mapIframe.contentDocument;
-      if(!h){ mapIframe.style.display="none"; if(mapFallback) mapFallback.style.display="flex"; }
-    } catch(e){
-      // cross-origin block = map loaded fine
-    }
-  }, 5000);
-}
+
 
 initSite();
 </script>
