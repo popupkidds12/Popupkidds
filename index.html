@@ -639,8 +639,6 @@ footer{background:var(--dark);padding:32px 40px}
       <div class="asb-sub">ADMIN PANEL</div>
     </div>
     <nav class="asb-nav">
-      <div class="asb-sec">Overview</div>
-      <button class="ab on" data-page="dashboard" onclick="admPage('dashboard',this)"><span class="ic">&#127968;</span>Dashboard</button>
       <div class="asb-sec">Website Sections</div>
       <button class="ab" data-page="pg-home" onclick="admPage('pg-home',this)"><span class="ic">&#127968;</span>Home Page</button>
       <button class="ab" data-page="pg-gallery" onclick="admPage('pg-gallery',this)"><span class="ic">&#128247;</span>Gallery</button>
@@ -659,36 +657,6 @@ footer{background:var(--dark);padding:32px 40px}
 
   <div class="amain">
 
-    <!-- ══ DASHBOARD ══════════════════════════════════════ -->
-    <div id="ap-dashboard" class="ap on">
-      <div class="ptit">&#128075; Welcome Back!</div>
-      <div class="psub">Pop-Up Kidds admin &#8212; all changes go live instantly</div>
-      <div class="stats">
-        <div class="stat"><div class="stic">&#128444;</div><div class="stvl" id="d-imgs">&#8212;</div><div class="stlb">Images uploaded</div></div>
-        <div class="stat"><div class="stic">&#128176;</div><div class="stvl" id="d-price">AED 39</div><div class="stlb">Walk-in (1hr)</div></div>
-        <div class="stat"><div class="stic">&#128336;</div><div class="stvl" id="d-today">&#8212;</div><div class="stlb">Today&#8217;s hours</div></div>
-        <div class="stat"><div class="stic">&#9989;</div><div class="stvl" id="d-saved">Ready</div><div class="stlb">Status</div></div>
-      </div>
-      <div class="card">
-        <div class="card-h">&#128640; Quick Actions</div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px">
-          <button class="sbtn" onclick="admPageById('pg-home')">&#127968; Edit Home</button>
-          <button class="sbtn" onclick="admPageById('pg-gallery')">&#128247; Edit Gallery</button>
-          <button class="sbtn" onclick="admPageById('pg-prices')">&#128176; Edit Prices</button>
-          <button class="sbtn" onclick="admPageById('pg-contact')">&#128242; Edit Contact</button>
-          <button class="xbtn" onclick="admLogout()">&#128065; View Website</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-h">&#128161; How It Works</div>
-        <ul style="font-size:14px;color:#666;line-height:2.2;padding-left:18px">
-          <li>Each tab = one section of your website</li>
-          <li>Edit any field and hit <strong>Save</strong> &#8212; goes live instantly</li>
-          <li>Upload images (max 5MB) &#8212; stored permanently in Supabase</li>
-          <li>Paste emoji directly into any field that shows emoji</li>
-        </ul>
-      </div>
-    </div>
 
     <!-- ══ HOME PAGE ══════════════════════════════════════ -->
     <div id="ap-pg-home" class="ap">
@@ -1396,10 +1364,14 @@ function doLogin(){
         closeLogin();
         el("view-site").style.display="none";
         el("view-admin").classList.add("show");
+        document.querySelectorAll(".ap").forEach(function(p){p.classList.remove("on");});
+        document.querySelectorAll(".ab").forEach(function(b){b.classList.remove("on");});
+        var hp=el("ap-pg-home");if(hp)hp.classList.add("on");
+        var hb=document.querySelector(".ab[data-page=\"pg-home\"]");if(hb)hb.classList.add("on");
         dbGet("site_settings","select=key,value").then(function(rows){if(rows&&rows.length){rows.forEach(function(r){S[r.key]=r.value;});}fillForms();});
         dbGet("site_images","select=id,url").then(function(imgs){
           if(imgs&&imgs.length){imgs.forEach(function(img){if(img.url)IMGS[img.id]=img.url;});}
-          buildGal();updDash();
+          buildGal();
           // Show current logo in admin upload area
           var ci=el("ci-logo");if(ci&&IMGS["logo"]){ci.src=IMGS["logo"];ci.classList.add("show");}
           else if(ci&&FB["logo"]){ci.src=FB["logo"];ci.classList.add("show");}
@@ -1418,11 +1390,11 @@ function admLogout(){
   LI=false;
   el("view-admin").classList.remove("show");
   el("view-site").style.display="block";
-  // Reset admin panel to dashboard
+  // Reset admin panel to Home Page
   document.querySelectorAll(".ap").forEach(function(p){p.classList.remove("on");});
   document.querySelectorAll(".ab").forEach(function(b){b.classList.remove("on");});
-  var dash=el("ap-dashboard");if(dash)dash.classList.add("on");
-  var firstBtn=document.querySelector('.ab[data-page="dashboard"]');
+  var dash=el("ap-pg-home");if(dash)dash.classList.add("on");
+  var firstBtn=document.querySelector(".ab[data-page=\"pg-home\"]");
   if(firstBtn)firstBtn.classList.add("on");
   var main=document.querySelector(".amain");if(main)main.scrollTop=0;
 }
@@ -1466,8 +1438,8 @@ function fillForms(){
   sv("a-btn1",S["hero_btn1"]);sv("a-btn2",S["hero_btn2"]);
   sv("a-mem-note",S["mem_note"]);sv("a-fam-note",S["fam_note"]);sv("a-copy",S["copyright"]);
   // Gallery text fields
-  var gDefF=[["Carnival","Carnival Play Zone"],["Ball Pit","Giant Ball Pool"],["Soft Play","Toddler Zone"],["Slides","Twin Mega Slides"],["Trampoline","Jump Zone"],["Explore","Fun Play Areas"]];
-  for(var fi=1;fi<=6;fi++){
+  var gDefF=[["Carnival","Carnival Play Zone"],["Ball Pit","Giant Ball Pool"],["Soft Play","Toddler Zone"],["Slides","Twin Mega Slides"],["Trampoline","Jump Zone"],["Explore","Fun Play Areas"],["Zone 7","Play Zone 7"],["Zone 8","Play Zone 8"],["Zone 9","Play Zone 9"],["Zone 10","Play Zone 10"],["Zone 11","Play Zone 11"],["Zone 12","Play Zone 12"]];
+  for(var fi=1;fi<=12;fi++){
     sv("a-gtag"+fi,S["gallery_tag_"+fi]||gDefF[fi-1][0]);
     sv("a-gnm"+fi,S["gallery_name_"+fi]||gDefF[fi-1][1]);
   }
@@ -1492,16 +1464,10 @@ function fillForms(){
     sv("a-rdesc"+rfi,  S["rule_desc_"+rfi]  || rDefF[rfi-1][3]);
   }
 }
-function updDash(){
-  var up=Object.keys(IMGS).filter(function(k){return IMGS[k];}).length;
-  tx("d-imgs",up+"/7");tx("d-price","AED "+(S["price_1hr"]||"39"));
-  var d=new Date().getDay();tx("d-today",(d===0||d===5||d===6)?(S["hours_weekend"]||"10AM-10PM"):(S["hours_weekday"]||"11AM-10PM"));
-  tx("d-saved","Connected");
-}
 
 var SKM={
   "pg-home":   [["a-tag","hero_tagline"],["a-sub","hero_sub"],["a-chip1","chip1"],["a-chip2","chip2"],["a-chip3","chip3"],["a-btn1","hero_btn1"],["a-btn2","hero_btn2"]],
-  "pg-gallery":[["a-ey1","ey_gallery"],["a-gal-tt","gal_title"],["a-gal-sb","gal_sub"],["a-galcnt","gallery_count"],["a-gtag1","gallery_tag_1"],["a-gnm1","gallery_name_1"],["a-gtag2","gallery_tag_2"],["a-gnm2","gallery_name_2"],["a-gtag3","gallery_tag_3"],["a-gnm3","gallery_name_3"],["a-gtag4","gallery_tag_4"],["a-gnm4","gallery_name_4"],["a-gtag5","gallery_tag_5"],["a-gnm5","gallery_name_5"],["a-gtag6","gallery_tag_6"],["a-gnm6","gallery_name_6"]],
+  "pg-gallery":[["a-ey1","ey_gallery"],["a-gal-tt","gal_title"],["a-gal-sb","gal_sub"],["a-galcnt","gallery_count"],["a-gtag1","gallery_tag_1"],["a-gnm1","gallery_name_1"],["a-gtag2","gallery_tag_2"],["a-gnm2","gallery_name_2"],["a-gtag3","gallery_tag_3"],["a-gnm3","gallery_name_3"],["a-gtag4","gallery_tag_4"],["a-gnm4","gallery_name_4"],["a-gtag5","gallery_tag_5"],["a-gnm5","gallery_name_5"],["a-gtag6","gallery_tag_6"],["a-gnm6","gallery_name_6"],["a-gtag7","gallery_tag_7"],["a-gnm7","gallery_name_7"],["a-gtag8","gallery_tag_8"],["a-gnm8","gallery_name_8"],["a-gtag9","gallery_tag_9"],["a-gnm9","gallery_name_9"],["a-gtag10","gallery_tag_10"],["a-gnm10","gallery_name_10"],["a-gtag11","gallery_tag_11"],["a-gnm11","gallery_name_11"],["a-gtag12","gallery_tag_12"],["a-gnm12","gallery_name_12"]],
   "pg-hours":  [["a-ey2","ey_hours"],["a-hrs-tt","hrs_title"],["a-hrs-sb","hrs_sub"],["a-hdy1","hrs_day1"],["a-hwkd","hours_weekday"],["a-hdy2","hrs_day2"],["a-hwke","hours_weekend"]],
   "pg-prices": [["a-ey3","ey_prices"],["a-prc-tt","prc_title"],["a-prc-sb","prc_sub"],["a-plbl1","price_label_1"],["a-wi1-dur","wi1_dur"],["a-p1h","price_1hr"],["a-wi2-dur","wi2_dur"],["a-p2h","price_2hr"],["a-wi-per","wi_per"],["a-plbl2","price_label_2"],["a-mem1-hd","mem1_head"],["a-mem2-hd","mem2_head"],["a-mv5","mem_visit_label_5"],["a-m1h5","price_mem_1hr_5"],["a-mv10","mem_visit_label_10"],["a-m1h10","price_mem_1hr_10"],["a-mv14","mem_visit_label_14"],["a-m1h14","price_mem_1hr_14"],["a-m2h5","price_mem_2hr_5"],["a-m2h10","price_mem_2hr_10"],["a-m2h14","price_mem_2hr_14"],["a-mem-note","mem_note"],["a-plbl3","price_label_3"],["a-fam1-hd","fam1_head"],["a-fam2-hd","fam2_head"],["a-f1h","price_fam_1hr"],["a-f1ho","price_fam_1hr_orig"],["a-f2h","price_fam_2hr"],["a-f2ho","price_fam_2hr_orig"],["a-fam-note","fam_note"],["a-sbi","school_icon"],["a-sct","school_offer_text"]],
   "pg-rules":  [["a-ey4","ey_rules"],["a-rul-tt","rul_title"],["a-ricon1","rule_icon_1"],["a-rtitle1","rule_title_1"],["a-rval1","rule_val_1"],["a-rdesc1","rule_desc_1"],["a-ricon2","rule_icon_2"],["a-rtitle2","rule_title_2"],["a-rval2","rule_val_2"],["a-rdesc2","rule_desc_2"],["a-ricon3","rule_icon_3"],["a-rtitle3","rule_title_3"],["a-rval3","rule_val_3"],["a-rdesc3","rule_desc_3"]],
