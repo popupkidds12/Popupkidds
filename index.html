@@ -1123,8 +1123,10 @@ function applyS(){
   tx("s-m2h5",S["price_mem_2hr_5"]||"270");tx("s-m2h10",S["price_mem_2hr_10"]||"499");tx("s-m2h14",S["price_mem_2hr_14"]||"649");
   tx("s-f1h",S["price_fam_1hr"]||"175");tx("s-f1ho",S["price_fam_1hr_orig"]||"195");
   tx("s-f2h",S["price_fam_2hr"]||"270");tx("s-f2ho",S["price_fam_2hr_orig"]||"300");
-  tx("s-f1hs",(parseInt(S["price_fam_1hr_orig"]||"195")-parseInt(S["price_fam_1hr"]||"175")).toString());
-  tx("s-f2hs",(parseInt(S["price_fam_2hr_orig"]||"300")-parseInt(S["price_fam_2hr"]||"270")).toString());
+  var f1orig=parseInt(S["price_fam_1hr_orig"]||"195")||195,f1pr=parseInt(S["price_fam_1hr"]||"175")||175;
+  var f2orig=parseInt(S["price_fam_2hr_orig"]||"300")||300,f2pr=parseInt(S["price_fam_2hr"]||"270")||270;
+  tx("s-f1hs",Math.max(0,f1orig-f1pr).toString());
+  tx("s-f2hs",Math.max(0,f2orig-f2pr).toString());
   ht("s-sbi",S["school_icon"]||"&#127979;");
   var sof=S["school_offer_text"]||"30% OFF for School Trips! Contact us.";
   var bi=sof.indexOf("!");
@@ -1389,6 +1391,8 @@ function admLogout(){
   try{sessionStorage.removeItem("pk_settings");sessionStorage.removeItem("pk_images");}catch(e){}
   el("view-admin").classList.remove("show");
   el("view-site").style.display="block";
+  // Leaflet loses its dimensions while view-site is hidden — recalculate
+  if(_leafletMap){setTimeout(function(){_leafletMap.invalidateSize();},50);}
   // Reset admin panel to Home Page
   document.querySelectorAll(".ap").forEach(function(p){p.classList.remove("on");});
   document.querySelectorAll(".ab").forEach(function(b){b.classList.remove("on");});
