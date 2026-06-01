@@ -1743,6 +1743,9 @@ window.addEventListener('load', function(){
     buildMapPopup(S['maps_url'] || '', S['address'] || ''),
     {maxWidth: 220}
   ).openPopup();
+
+  // S may already be populated by initSite() before the map was ready — apply now
+  updateLeafletMap();
 });
 
 initSite();
