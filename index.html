@@ -1142,11 +1142,8 @@ function applyS(){
   if(S["phone_landline"])at("s-phlink","href","tel:"+S["phone_landline"].replace(/ /g,""));
   tx("s-phhdl",S["phone_landline"]||"03 762 3100");
   if(S["maps_url"])at("s-mapslink","href",S["maps_url"]);
-  // Also update map embed if a custom embed URL is stored
-  if(S["maps_embed_url"]){
-    var mf=document.getElementById("map-iframe");
-    if(mf)mf.src=S["maps_embed_url"];
-  }
+  // Update the Leaflet map pin and directions link when location settings change
+  updateLeafletMap();
   var d=new Date().getDay();var we=(d===0||d===5||d===6);
   tx("s-today",we?(S["hours_weekend"]||"10:00 AM - 10:00 PM"):(S["hours_weekday"]||"11:00 AM - 10:00 PM"));
   // Gallery text
@@ -1681,12 +1678,46 @@ function toast(msg,type){
 
 
 // Leaflet interactive map
+var _leafletMap = null;
+var _leafletMarker = null;
+var _leafletIcon = null;
+
+function buildMapPopup(mapsUrl, addr) {
+  var dirUrl = mapsUrl || 'https://www.google.com/maps/dir/?api=1&destination=24.2235,55.7420';
+  var addrLine = addr || 'Al Wadi Mall, Shop No. 6<br/>Al Qua\'a, Al Ain';
+  return (
+    '<div style="font-family:Nunito,sans-serif;text-align:center;padding:4px 2px">' +
+    '<strong style="font-size:15px;color:#1A1A2E">🎉 Pop-Up Kidds</strong><br/>' +
+    '<span style="font-size:12px;color:#666">' + addrLine + '</span><br/>' +
+    '<a href="' + dirUrl + '" target="_blank" ' +
+    'style="display:inline-block;margin-top:8px;background:#4BBFB0;color:#fff;padding:6px 16px;border-radius:50px;font-weight:800;font-size:12px;text-decoration:none">🧭 Get Directions</a>' +
+    '</div>'
+  );
+}
+
+function updateLeafletMap() {
+  if (!_leafletMap || !_leafletMarker) return;
+  var mapsUrl = S['maps_url'] || '';
+  var addr = (S['address'] || '').replace(/\n/g, '<br/>');
+  // Try to parse lat/lng from URL formats:
+  //   ?q=24.123,55.456  or  /place/.../@24.123,55.456,  or  destination=24.123,55.456
+  var coords = mapsUrl.match(/[?&](?:q|destination)=(-?\d+\.?\d*),(-?\d+\.?\d*)/) ||
+               mapsUrl.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*),/);
+  if (coords) {
+    var newLat = parseFloat(coords[1]);
+    var newLng = parseFloat(coords[2]);
+    _leafletMarker.setLatLng([newLat, newLng]);
+    _leafletMap.setView([newLat, newLng], 16);
+  }
+  _leafletMarker.getPopup().setContent(buildMapPopup(mapsUrl, addr)).update();
+}
+
 window.addEventListener('load', function(){
   var lat = 24.2235, lng = 55.7420;
   var mapEl = document.getElementById('leaflet-map');
   if(!mapEl || typeof L === 'undefined') return;
 
-  var map = L.map('leaflet-map', {
+  _leafletMap = L.map('leaflet-map', {
     center: [lat, lng],
     zoom: 16,
     zoomControl: true,
@@ -1696,10 +1727,10 @@ window.addEventListener('load', function(){
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  }).addTo(map);
+  }).addTo(_leafletMap);
 
   // Custom teal pin icon
-  var icon = L.divIcon({
+  _leafletIcon = L.divIcon({
     className: '',
     html: '<div style="width:44px;height:44px;background:#E86B4A;border:4px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 6px 20px rgba(232,107,74,.5)"></div>',
     iconSize: [44, 44],
@@ -1707,14 +1738,9 @@ window.addEventListener('load', function(){
     popupAnchor: [0, -48]
   });
 
-  var marker = L.marker([lat, lng], {icon: icon}).addTo(map);
-  marker.bindPopup(
-    '<div style="font-family:Nunito,sans-serif;text-align:center;padding:4px 2px">' +
-    '<strong style="font-size:15px;color:#1A1A2E">🎉 Pop-Up Kidds</strong><br/>' +
-    '<span style="font-size:12px;color:#666">Al Wadi Mall, Shop No. 6<br/>Al Qua\'a, Al Ain</span><br/>' +
-    '<a href="https://www.google.com/maps/dir/?api=1&destination=24.2235,55.7420" target="_blank" ' +
-    'style="display:inline-block;margin-top:8px;background:#4BBFB0;color:#fff;padding:6px 16px;border-radius:50px;font-weight:800;font-size:12px;text-decoration:none">🧭 Get Directions</a>' +
-    '</div>',
+  _leafletMarker = L.marker([lat, lng], {icon: _leafletIcon}).addTo(_leafletMap);
+  _leafletMarker.bindPopup(
+    buildMapPopup(S['maps_url'] || '', S['address'] || ''),
     {maxWidth: 220}
   ).openPopup();
 });
